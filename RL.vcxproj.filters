@@ -27,6 +27,15 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="BellmanSolve.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BellmanOptimalitySolve.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TruncatePolicyIteration.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Environment.h">
@@ -36,6 +45,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RLAlgorithm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BellmanSolve.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BellmanOptimalitySolve.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TruncatePolicyIteration.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

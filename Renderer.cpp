@@ -7,7 +7,7 @@
 // 辅助函数：根据状态值选择颜色
 void setColorBasedOnValue(float value) {
     // 示例：使用简单的线性映射将状态值映射到蓝色到红色的渐变
-    float normalizedValue = std::min(std::max(value, 0.0f), 1.0f); // 确保值在0到1之间
+    float normalizedValue = std::min(std::max(value/100.0f, 0.0f), 1.0f); // 确保值在0到1之间
     glColor3f(normalizedValue, 0.0, 1.0 - normalizedValue);
 }
 
@@ -19,39 +19,6 @@ void drawText(const char* text, float x, float y) {
     }
 }
 
-//// 辅助函数：绘制代表策略的线段或圆形
-//void drawPolicyIndicator(float x, float y, float cellWidth, float cellHeight, const std::map<ActionType, float>& actionProbabilities) {
-//    // 动作到方向的映射
-//    std::map<ActionType, std::pair<float, float>> directions = {
-//        {ActionType::Up, {0, -1}},
-//        {ActionType::Down, {0, 1}},
-//        {ActionType::Left, {-1, 0}},
-//        {ActionType::Right, {1, 0}}
-//    };
-//
-//    for (const auto& actionProbability : actionProbabilities) {
-//        auto direction = directions[actionProbability.first];
-//        float length = std::sqrt(actionProbability.second) * std::min(cellWidth, cellHeight) / 2; // 使用概率的平方根来缩放长度
-//
-//        // 如果策略是原地不动，则绘制一个圆形表示概率
-//        if (actionProbability.first == ActionType::Stay) {
-//            float radius = length/2.0f; // 使用概率来确定圆的半径
-//            glBegin(GL_LINE_LOOP);
-//            for (int i = 0; i < 360; i++) {
-//                float degInRad = i * (3.14159f / 180.0f);
-//                glVertex2f(cos(degInRad) * radius + x + cellWidth / 2, sin(degInRad) * radius + y + cellHeight / 2);
-//            }
-//            glEnd();
-//        }
-//        else {
-//            // 否则，根据概率绘制线段
-//            glBegin(GL_LINES);
-//            glVertex2f(x + cellWidth / 2, y + cellHeight / 2);
-//            glVertex2f(x + cellWidth / 2 + direction.first * length, y + cellHeight / 2 + direction.second * length);
-//            glEnd();
-//        }
-//    }
-//}
 
 void drawPolicyIndicator(float x, float y, float cellWidth, float cellHeight, const std::map<ActionType, float>& actionProbabilities) {
     // 动作到方向的映射
@@ -102,18 +69,28 @@ void Renderer::drawEnvironment() {
                 glColor3f(1.0, 1.0, 1.0); // White
                 break;
             case CellType::Obstacle:
-                glColor3f(0.5, 0.5, 0.5); // Gray
+                glColor3f(1.0, 1.0, 0.8); // 淡黄色
                 break;
             case CellType::Target:
-                glColor3f(1.0, 0.0, 0.0); // Red
+                glColor3f(0.8, 1.0, 0.8); // 淡灰绿色
                 break;
             }
-            // Calculate cell coordinates
+            // 计算格子坐标和尺寸
             float x = i * windowWidth / grid.size();
             float y = j * windowHeight / grid[i].size();
             float cellWidth = windowWidth / grid.size();
             float cellHeight = windowHeight / grid[i].size();
+            // 绘制格子
             glBegin(GL_QUADS);
+            glVertex2f(x, y);
+            glVertex2f(x + cellWidth, y);
+            glVertex2f(x + cellWidth, y + cellHeight);
+            glVertex2f(x, y + cellHeight);
+            glEnd();
+            // 绘制格子边框
+            glColor3f(0.8, 0.8, 0.8); // 淡灰色
+            glLineWidth(1);
+            glBegin(GL_LINE_LOOP);
             glVertex2f(x, y);
             glVertex2f(x + cellWidth, y);
             glVertex2f(x + cellWidth, y + cellHeight);
@@ -142,6 +119,15 @@ void Renderer::drawEnvironment() {
             float textY = y + cellHeight / 2.0f - 10.0f; // GLUT_BITMAP_8_BY_13的字符高度大约为13像素
             setColorBasedOnValue(stateValue); // 可以根据需要调整文本颜色
             drawText(text, textX, textY);
+
+            //在格子中心
+            float radius = 3.0f; // 使用概率来确定圆的半径
+            glBegin(GL_POLYGON); // 修改为GL_LINE_LOOP绘制空心圆
+            for (int i = 0; i < 360; i++) {
+                float degInRad = i * (3.14159f / 180.0f);
+                glVertex2f(cos(degInRad) * radius + x + cellWidth / 2, sin(degInRad) * radius + y + cellHeight / 2);
+            }
+            glEnd();
 
             // 获取当前格子的策略
             auto actionProbabilities = agent->getStochasticPolicy({ i, j });

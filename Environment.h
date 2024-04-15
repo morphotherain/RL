@@ -25,7 +25,7 @@ public:
     const std::vector<std::vector<CellType>>& getGrid() const { return grid; }
 
     // ÔÚEnvironmentÀàÖĞ
-    const std::vector<std::vector<float>>& getStateValues() const {
+    std::vector<std::vector<float>>& getStateValues() {
         return stateValues;
     }
 

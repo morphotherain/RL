@@ -39,7 +39,7 @@ void Environment::initializeActionSpace() {
     actionSpace[ActionType::Down] = { 0, 1 };
     actionSpace[ActionType::Left] = { -1, 0 };
     actionSpace[ActionType::Right] = { 1, 0 };
-    actionSpace[ActionType::Right] = { 0, 0 };
+    actionSpace[ActionType::Stay] = { 0, 0 };
 }
 
 

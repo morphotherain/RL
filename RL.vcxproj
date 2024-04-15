@@ -133,14 +133,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="BellmanOptimalitySolve.cpp" />
+    <ClCompile Include="BellmanSolve.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="TruncatePolicyIteration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
+    <ClInclude Include="BellmanOptimalitySolve.h" />
+    <ClInclude Include="BellmanSolve.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RLAlgorithm.h" />
+    <ClInclude Include="TruncatePolicyIteration.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

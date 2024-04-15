@@ -20,4 +20,8 @@ public:
     // 更多渲染相关的方法...
 };
 
+// 辅助函数：在指定位置绘制文本
+void drawText(const char* text, float x, float y);
+
+
 #endif
