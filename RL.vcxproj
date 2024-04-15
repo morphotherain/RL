@@ -139,6 +139,7 @@
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MCBasic.cpp" />
+    <ClCompile Include="MCεGreedy.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="TruncatePolicyIteration.cpp" />
   </ItemGroup>
@@ -148,6 +149,7 @@
     <ClInclude Include="BellmanSolve.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="MCBasic.h" />
+    <ClInclude Include="MCεGreedy.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RLAlgorithm.h" />
