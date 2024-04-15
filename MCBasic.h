@@ -1,6 +1,6 @@
 #pragma once
 #include "RLAlgorithm.h"
-class BellmanOptimalitySolve : public RLAlgorithm
+class MCBasic : public RLAlgorithm
 {
 private:
 	float gamma = 0.9f;

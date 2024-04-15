@@ -8,7 +8,7 @@
 Environment environment;
 Agent agent(&environment);
 Renderer renderer(&environment, &agent);
-int desiredFPS = 1;
+float desiredFPS = 0.5;
 
 // 初始化OpenGL图形视图
 void initOpenGL() {

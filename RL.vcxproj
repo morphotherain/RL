@@ -108,6 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,6 +138,7 @@
     <ClCompile Include="BellmanSolve.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MCBasic.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="TruncatePolicyIteration.cpp" />
   </ItemGroup>
@@ -145,9 +147,14 @@
     <ClInclude Include="BellmanOptimalitySolve.h" />
     <ClInclude Include="BellmanSolve.h" />
     <ClInclude Include="Environment.h" />
+    <ClInclude Include="MCBasic.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RLAlgorithm.h" />
     <ClInclude Include="TruncatePolicyIteration.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RL.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

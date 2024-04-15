@@ -6,7 +6,7 @@ Agent::Agent(Environment* env) : environment(env) {
     initializeDeterministicPolicy(5);
     initializeStochasticPolicy(5);
     //initializeActionSpace();
-    setAlgorithm(new TruncatePolicyIteration()); // 默认设置为BellmanSolve算法
+    setAlgorithm(new MCBasic()); // 默认设置为BellmanSolve算法
 }
 
 Agent::~Agent() {

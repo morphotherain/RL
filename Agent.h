@@ -6,6 +6,7 @@
 #include "BellmanSolve.h"
 #include "BellmanOptimalitySolve.h"
 #include "TruncatePolicyIteration.h"
+#include "MCBasic.h"
 #include <cstdlib> // °üº¬rand()ºÍsrand()
 #include <ctime> // °üº¬time()
 
