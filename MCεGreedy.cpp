@@ -16,7 +16,7 @@ std::vector<EpisodeStep> εGreedy_generateEpisode(Agent& agent, Environment* pen
     const auto& grid = penv->getGrid();
     while (length > 0 && grid[state.first][state.second] != CellType::Target) {
         auto actionProbabilities = agent.getStochasticPolicy(state);
-        ActionType action = agent.chooseActionStochastic(state); // 需要实现根据概率选择动作的方法
+        ActionType action = agent.chooseActionStochastic(state); 
         auto s_next = agent.getNextState(state, action);
         auto reward = penv->getReward(state.first, state.second, action);
         episode.push_back({ state, action, reward });
@@ -26,13 +26,13 @@ std::vector<EpisodeStep> εGreedy_generateEpisode(Agent& agent, Environment* pen
     return episode;
 }
 
-void εGreedy_evaluatePolicy(Agent& agent, Environment* penv, int numEpisodes, float gamma) {
+void εGreedy_evaluatePolicy(Agent& agent, Environment* penv, int numEpisodes, float gamma, int lenEpisodes) {
     std::map<std::pair<int, int>, std::vector<float>> returns; // 状态的所有返回值
     const auto& grid = penv->getGrid();
     for (size_t i = 0; i < grid.size(); i++) {
         for (size_t j = 0; j < grid[i].size(); j++) {
             for (int e = 0; e < numEpisodes; ++e) {
-                auto episode = εGreedy_generateEpisode(agent, penv, { i,j }, 10);
+                auto episode = εGreedy_generateEpisode(agent, penv, { i,j }, lenEpisodes);
                 std::set<std::pair<int, int>> visitedStates; // 用于记录情节中已访问的状态
                 float G = 0; // 初始化累积奖励
                 for (auto it = episode.rbegin(); it != episode.rend(); ++it) { // 逆序遍历情节
@@ -89,7 +89,7 @@ void MCεGreedy::run(Agent& agent) {
     auto gamma = 0.9f;
 
     auto penv = agent.getEnvironment();
-    εGreedy_evaluatePolicy(agent, penv, 5, gamma);
+    εGreedy_evaluatePolicy(agent, penv, EpisodeNum, gamma, EpisodeLen);
     εGreedy_improvePolicyGreedy(agent, penv, gamma, ε);
 
 }

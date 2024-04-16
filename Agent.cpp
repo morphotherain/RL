@@ -3,10 +3,10 @@
 
 Agent::Agent(Environment* env) : environment(env) {
     srand(static_cast<unsigned int>(time(nullptr)));
-    initializeDeterministicPolicy(5);
-    initializeStochasticPolicy(5);
+    initializeDeterministicPolicy(env);
+    initializeStochasticPolicy(env);
     //initializeActionSpace();
-    setAlgorithm(new MCεGreedy()); // 默认设置为BellmanSolve算法
+    setAlgorithm(new MCExplore()); // 默认设置为BellmanSolve算法
 }
 
 Agent::~Agent() {
@@ -27,9 +27,10 @@ void Agent::run() {
 
 
 
-void Agent::initializeDeterministicPolicy(int gridSize) {
-    for (int x = 0; x < gridSize; x++) {
-        for (int y = 0; y < gridSize; y++) {
+void Agent::initializeDeterministicPolicy(Environment* env) {
+    const auto& grid = env->getGrid();
+    for (int x = 0; x < grid.size(); x++) {
+        for (int y = 0; y < grid[x].size(); y++) {
             std::map<ActionType, float> probabilities;
             for (int i = 0; i < 5; i++) {
                 probabilities[static_cast<ActionType>(i)] = 0.0f;
@@ -41,9 +42,10 @@ void Agent::initializeDeterministicPolicy(int gridSize) {
     }
 }
 
-void Agent::initializeStochasticPolicy(int gridSize) {
-    for (int x = 0; x < gridSize; x++) {
-        for (int y = 0; y < gridSize; y++) {
+void Agent::initializeStochasticPolicy(Environment* env) {
+    const auto& grid = env->getGrid();
+    for (int x = 0; x < grid.size(); x++) {
+        for (int y = 0; y < grid[x].size(); y++) {
             std::map<ActionType, float> probabilities;
             float total = 0;
             for (int action = 0; action < 5; action++) {

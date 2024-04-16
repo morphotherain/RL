@@ -1,12 +1,11 @@
 #pragma once
 
 #include "RLAlgorithm.h"
-class MCExplore : public RLAlgorithm
+class GradientDescent : public RLAlgorithm
 {
 private:
 	float gamma = 0.9f;
-	int EpisodeLen = 20;
-	int EpisodeNum = 2;
+	float alpha = 0.05f; // Ñ§Ï°ÂÊ
 public:
 	void run(Agent& agent) override;
 };

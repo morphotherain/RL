@@ -26,13 +26,13 @@ std::vector<EpisodeStep> MCExplore_generateEpisode(Agent& agent, Environment* pe
     return episode;
 }
 
-void MCExplore_evaluatePolicy(Agent& agent, Environment* penv, int numEpisodes, float gamma) {
+void MCExplore_evaluatePolicy(Agent& agent, Environment* penv, int numEpisodes, float gamma, int lenEpisodes) {
     std::map<std::pair<int, int>, std::vector<float>> returns; // 状态的所有返回值
     const auto& grid = penv->getGrid();
     for (size_t i = 0; i < grid.size(); i++) {
         for (size_t j = 0; j < grid[i].size(); j++) {
             for (int e = 0; e < numEpisodes; ++e) {
-                auto episode = MCExplore_generateEpisode(agent, penv, { i,j }, 10);
+                auto episode = MCExplore_generateEpisode(agent, penv, { i,j }, lenEpisodes);
                 std::set<std::pair<int, int>> visitedStates; // 用于记录情节中已访问的状态
                 float G = 0; // 初始化累积奖励
                 for (auto it = episode.rbegin(); it != episode.rend(); ++it) { // 逆序遍历情节
@@ -89,7 +89,7 @@ void MCExplore::run(Agent& agent) {
     auto gamma = 0.9f;
 
     auto penv = agent.getEnvironment();
-    MCExplore_evaluatePolicy(agent, penv, 2, gamma);
+    MCExplore_evaluatePolicy(agent, penv, EpisodeNum, gamma, EpisodeLen);
     MCExplore_improvePolicyGreedy(agent, penv, gamma);
 
 }

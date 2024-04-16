@@ -18,7 +18,7 @@ void Environment::initializeGrid() {
     grid[targetX][targetY] = CellType::Target;
 
     // 随机放置5个障碍物
-    for (int i = 0; i < 5; ) {
+    for (int i = 0; i < 20; ) {
         int obsX = rand() % gridSize;
         int obsY = rand() % gridSize;
         if (grid[obsX][obsY] == CellType::Empty) {

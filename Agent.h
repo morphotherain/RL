@@ -7,7 +7,9 @@
 #include "BellmanOptimalitySolve.h"
 #include "TruncatePolicyIteration.h"
 #include "MCBasic.h"
+#include "MCExplore.h"
 #include "MCεGreedy.h"
+#include "GradientDescent.h"
 #include <cstdlib> // 包含rand()和srand()
 #include <ctime> // 包含time()
 
@@ -34,9 +36,9 @@ public:
 
     void run();
 
-    void initializeDeterministicPolicy(int gridSize);
+    void initializeDeterministicPolicy(Environment* env);
 
-    void initializeStochasticPolicy(int gridSize);
+    void initializeStochasticPolicy(Environment* env);
 
     void initializeActionSpace(); // 初始化动作空间
 

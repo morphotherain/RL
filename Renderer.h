@@ -8,10 +8,10 @@ class Renderer {
 private:
     Environment* environment;
     Agent* agent;
-    int windowWidth = 500;
-    int windowHeight = 500;
+    int windowWidth = 1000;
+    int windowHeight = 1000;
 public:
-    Renderer(Environment* env, Agent* agt) : environment(env), agent(agt) {}
+    Renderer(Environment* env, Agent* agt) : environment(env), agent(agt), windowWidth(100*env->getGridSize()), windowHeight(100 * env->getGridSize()) {}
     void drawEnvironment(); // 绘制环境
     void drawAgent(); // 绘制代理
     void drawGrid(); // 绘制网格

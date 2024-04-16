@@ -137,6 +137,7 @@
     <ClCompile Include="BellmanOptimalitySolve.cpp" />
     <ClCompile Include="BellmanSolve.cpp" />
     <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="GradientDescent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MCBasic.cpp" />
     <ClCompile Include="MCExplore.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="BellmanOptimalitySolve.h" />
     <ClInclude Include="BellmanSolve.h" />
     <ClInclude Include="Environment.h" />
+    <ClInclude Include="GradientDescent.h" />
     <ClInclude Include="MCBasic.h" />
     <ClInclude Include="MCExplore.h" />
     <ClInclude Include="MCεGreedy.h" />

@@ -5,9 +5,9 @@
 #include <cmath> // For cos and sin functions
 
 // 辅助函数：根据状态值选择颜色
-void setColorBasedOnValue(float value) {
+void setColorBasedOnValue(float value, float max) {
     // 示例：使用简单的线性映射将状态值映射到蓝色到红色的渐变
-    float normalizedValue = std::min(std::max(value/100.0f, 0.0f), 1.0f); // 确保值在0到1之间
+    float normalizedValue = std::min(std::max(value/ std::max(max, 10.0f), 0.0f), 1.0f); // 确保值在0到1之间
     glColor3f(normalizedValue, 0.0, 1.0 - normalizedValue);
 }
 
@@ -98,6 +98,14 @@ void Renderer::drawEnvironment() {
             glEnd();
         }
     }
+    float maxStateValue = 0.0f;
+
+    for (size_t i = 0; i < grid.size(); i++) {
+        for (size_t j = 0; j < grid[i].size(); j++) {
+            if (stateValues[i][j] > maxStateValue)
+                maxStateValue = stateValues[i][j];
+        }
+    }
     for (size_t i = 0; i < grid.size(); i++) {
         for (size_t j = 0; j < grid[i].size(); j++) {
             float x = i * windowWidth / grid.size();
@@ -106,7 +114,7 @@ void Renderer::drawEnvironment() {
             float cellHeight = windowHeight / grid[i].size();
 
             // 设置基于状态值的颜色
-            setColorBasedOnValue(stateValues[i][j]);
+            setColorBasedOnValue(stateValues[i][j],maxStateValue);
 
             // 绘制状态值
             float stateValue = stateValues[i][j];
@@ -117,12 +125,12 @@ void Renderer::drawEnvironment() {
             float textWidth = glutBitmapLength(GLUT_BITMAP_8_BY_13, (const unsigned char*)text);
             float textX = x + (cellWidth - textWidth) / 2.0f - 20.0f;
             float textY = y + cellHeight / 2.0f - 10.0f; // GLUT_BITMAP_8_BY_13的字符高度大约为13像素
-            setColorBasedOnValue(stateValue); // 可以根据需要调整文本颜色
+            setColorBasedOnValue(stateValue, maxStateValue); // 可以根据需要调整文本颜色
             drawText(text, textX, textY);
 
             //在格子中心
-            float radius = 3.0f; // 使用概率来确定圆的半径
-            glBegin(GL_POLYGON); // 修改为GL_LINE_LOOP绘制空心圆
+            float radius = 5.0f;
+            glBegin(GL_POLYGON); 
             for (int i = 0; i < 360; i++) {
                 float degInRad = i * (3.14159f / 180.0f);
                 glVertex2f(cos(degInRad) * radius + x + cellWidth / 2, sin(degInRad) * radius + y + cellHeight / 2);
