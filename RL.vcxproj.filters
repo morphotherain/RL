@@ -42,6 +42,9 @@
     <ClCompile Include="MCεGreedy.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MCExplore.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Environment.h">
@@ -72,6 +75,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MCεGreedy.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MCExplore.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
