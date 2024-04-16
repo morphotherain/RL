@@ -1,4 +1,4 @@
-#include "GradientDescent.h"
+#include "StochasticGradientDescent.h"
 #include "MCBasic.h"
 #include "Agent.h"
 #include <iostream>
@@ -7,32 +7,45 @@
 
 
 
-void GradientDescent::evaluatePolicy(Agent& agent) {
+void StochasticGradientDescent::evaluatePolicy(Agent& agent) {
 
     auto penv = agent.getEnvironment();
     const auto& grid = penv->getGrid();
 
-    for (size_t i = 0; i < grid.size(); i++) {
-        for (size_t j = 0; j < grid[i].size(); j++) {
-            std::pair<int, int> state = { i, j };
+    auto episodes = agent.iteratorGenerateEpisodes(agent, penv, EpisodeLen, EpisodeNum);
+    auto& stateValues = penv->getStateValues();
 
-            ActionType action = agent.chooseActionStochastic(state);
-            // 假设getNextState和getReward能够处理边界情况
-            auto s_next = agent.getNextState(state, action);
-            auto reward = penv->getReward(i, j, action);
+    // 假设gamma和alpha已定义
+    std::map<std::pair<size_t, size_t>, std::pair<float, int>> stateGradients;
 
-            // 计算目标价值
-            float target = reward + gamma * penv->getStateValues()[s_next.first][s_next.second];
-            float value = penv->getStateValues()[i][j];
+    for (const auto& episode : episodes) {
+        float G = 0; // 累积奖励
+        for (auto it = episode.rbegin(); it != episode.rend(); ++it) {
+            G = it->reward + gamma * G; // 更新累积奖励
+            auto& state = it->state;
+            auto& value = stateValues[state.first][state.second];
+            float gradient = -2 * (G - value); // 计算梯度
 
-            // 计算梯度并更新状态值
-            float gradient = -2 * (target - value);
-            penv->getStateValues()[i][j] -= alpha * gradient;
+            // 累加当前状态的梯度，并计数该状态出现的次数
+            if (stateGradients.find(state) == stateGradients.end()) {
+                stateGradients[state] = std::make_pair(gradient, 1);
+            }
+            else {
+                stateGradients[state].first += gradient;
+                stateGradients[state].second += 1;
+            }
         }
+    }
+
+    // 使用累积的梯度和计数来更新状态值
+    for (auto& [state, gradCount] : stateGradients) {
+        auto& [cumulativeGradient, count] = gradCount;
+        float avgGradient = cumulativeGradient / count; // 计算平均梯度
+        stateValues[state.first][state.second] -= alpha * avgGradient; // 更新状态值
     }
 }
 
-void GradientDescent::improvePolicyGreedy(Agent& agent) {
+void StochasticGradientDescent::improvePolicyGreedy(Agent& agent) {
 
     auto penv = agent.getEnvironment();
     const auto& grid = penv->getGrid();
@@ -63,9 +76,9 @@ void GradientDescent::improvePolicyGreedy(Agent& agent) {
 }
 
 
-void GradientDescent::run(Agent& agent) {
+void StochasticGradientDescent::run(Agent& agent) {
 
-    
+
     evaluatePolicy(agent);
     improvePolicyGreedy(agent);
 

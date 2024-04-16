@@ -4,35 +4,16 @@
 #include <set>
 #include <numeric>
 
-struct EpisodeStep {
-    std::pair<int, int> state;
-    ActionType action;
-    float reward;
-};
 
-std::vector<EpisodeStep> εGreedy_generateEpisode(Agent& agent, Environment* penv, std::pair<int, int> start, int length) {
-    std::vector<EpisodeStep> episode;
-    std::pair<int, int> state = start;
-    const auto& grid = penv->getGrid();
-    while (length > 0 && grid[state.first][state.second] != CellType::Target) {
-        auto actionProbabilities = agent.getStochasticPolicy(state);
-        ActionType action = agent.chooseActionStochastic(state); 
-        auto s_next = agent.getNextState(state, action);
-        auto reward = penv->getReward(state.first, state.second, action);
-        episode.push_back({ state, action, reward });
-        state = s_next;
-        length--;
-    }
-    return episode;
-}
 
-void εGreedy_evaluatePolicy(Agent& agent, Environment* penv, int numEpisodes, float gamma, int lenEpisodes) {
+void MCεGreedy::evaluatePolicy(Agent& agent) {
+    auto penv = agent.getEnvironment();
     std::map<std::pair<int, int>, std::vector<float>> returns; // 状态的所有返回值
     const auto& grid = penv->getGrid();
     for (size_t i = 0; i < grid.size(); i++) {
         for (size_t j = 0; j < grid[i].size(); j++) {
-            for (int e = 0; e < numEpisodes; ++e) {
-                auto episode = εGreedy_generateEpisode(agent, penv, { i,j }, lenEpisodes);
+            for (int e = 0; e < EpisodeNum; ++e) {
+                auto episode = agent.generateEpisode(agent, penv, { i,j }, EpisodeLen);
                 std::set<std::pair<int, int>> visitedStates; // 用于记录情节中已访问的状态
                 float G = 0; // 初始化累积奖励
                 for (auto it = episode.rbegin(); it != episode.rend(); ++it) { // 逆序遍历情节
@@ -55,7 +36,8 @@ void εGreedy_evaluatePolicy(Agent& agent, Environment* penv, int numEpisodes, f
     }
 }
 
-void εGreedy_improvePolicyGreedy(Agent& agent, Environment* penv, float gamma, float ε) {
+void MCεGreedy::improvePolicyGreedy(Agent& agent) {
+    auto penv = agent.getEnvironment();
     const auto& grid = penv->getGrid();
     for (size_t i = 0; i < penv->getGrid().size(); i++) {
         for (size_t j = 0; j < penv->getGrid()[i].size(); j++) {
@@ -89,7 +71,7 @@ void MCεGreedy::run(Agent& agent) {
     auto gamma = 0.9f;
 
     auto penv = agent.getEnvironment();
-    εGreedy_evaluatePolicy(agent, penv, EpisodeNum, gamma, EpisodeLen);
-    εGreedy_improvePolicyGreedy(agent, penv, gamma, ε);
+    evaluatePolicy(agent);
+    improvePolicyGreedy(agent);
 
 }

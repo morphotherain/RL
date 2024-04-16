@@ -48,6 +48,12 @@
     <ClCompile Include="GradientDescent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="batchGradientDescent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StochasticGradientDescent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Environment.h">
@@ -84,6 +90,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GradientDescent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="batchGradientDescent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StochasticGradientDescent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

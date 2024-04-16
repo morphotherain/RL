@@ -10,8 +10,16 @@
 #include "MCExplore.h"
 #include "MCεGreedy.h"
 #include "GradientDescent.h"
+#include "batchGradientDescent.h"
+#include "StochasticGradientDescent.h"
 #include <cstdlib> // 包含rand()和srand()
 #include <ctime> // 包含time()
+
+struct EpisodeStep {
+    std::pair<int, int> state;
+    ActionType action;
+    float reward;
+};
 
 
 class Agent {
@@ -60,4 +68,11 @@ public:
     Environment* getEnvironment() { return environment; }
 
     std::pair<int, int> getNextState(const std::pair<int, int>& currentState, ActionType action);
+
+    //从初始位置进行1次长度为length的episode
+    std::vector<EpisodeStep> generateEpisode(Agent& agent, Environment* penv, std::pair<int, int> start, int length);
+    //从初始位置进行n次长度为length的episode
+    std::vector<std::vector<EpisodeStep>> generateEpisodes(Agent& agent, Environment* env, std::pair<int, int> start, int length, int numEpisodes);
+    //从所有位置都进行n次长度为length的episode
+    std::vector<std::vector<EpisodeStep>> iteratorGenerateEpisodes(Agent& agent, Environment* env,  int length, int numEpisodes);
 };

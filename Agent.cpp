@@ -6,7 +6,7 @@ Agent::Agent(Environment* env) : environment(env) {
     initializeDeterministicPolicy(env);
     initializeStochasticPolicy(env);
     //initializeActionSpace();
-    setAlgorithm(new MCExplore()); // 默认设置为BellmanSolve算法
+    setAlgorithm(new StochasticGradientDescent()); // 默认设置为BellmanSolve算法
 }
 
 Agent::~Agent() {
@@ -160,3 +160,45 @@ std::map<ActionType, std::pair<int, int>> Agent::getActionSpace()
     return actionSpace;
 }
 
+
+
+std::vector<EpisodeStep> Agent::generateEpisode(Agent & agent, Environment * penv, std::pair<int, int> start, int length) {
+    std::vector<EpisodeStep> episode;
+    std::pair<int, int> state = start;
+    const auto& grid = penv->getGrid();
+    while (length > 0 && grid[state.first][state.second] != CellType::Target) {
+        auto actionProbabilities = agent.getStochasticPolicy(state);
+        ActionType action = agent.chooseActionStochastic(state);
+        auto s_next = agent.getNextState(state, action);
+        auto reward = penv->getReward(state.first, state.second, action);
+        episode.push_back({ state, action, reward });
+        state = s_next;
+        length--;
+    }
+    return episode;
+}
+
+std::vector<std::vector<EpisodeStep>> Agent::generateEpisodes(Agent& agent, Environment* env, std::pair<int, int> start, int length, int numEpisodes) {
+    std::vector<std::vector<EpisodeStep>> episodes;
+    for (int episode = 0; episode < numEpisodes; ++episode) {
+        episodes.push_back(generateEpisode(agent, env, start, length));
+    }
+    return episodes;
+}
+
+std::vector<std::vector<EpisodeStep>> Agent::iteratorGenerateEpisodes(Agent& agent, Environment* env, int length, int numEpisodes)
+{
+    std::vector<std::vector<EpisodeStep>> episodes;
+
+    auto penv = agent.getEnvironment();
+    const auto& grid = penv->getGrid();
+    for (size_t i = 0; i < grid.size(); i++) {
+        for (size_t j = 0; j < grid[i].size(); j++) {
+            for (int episode = 0; episode < numEpisodes; ++episode) {
+                episodes.push_back(generateEpisode(agent, env, {i,j}, length));
+            }
+        }
+    }
+
+    return episodes;
+}

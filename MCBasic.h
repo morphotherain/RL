@@ -8,5 +8,7 @@ private:
 	int EpisodeNum = 2;
 public:
 	void run(Agent& agent) override;
+	void improvePolicyGreedy(Agent& agent);
+	void evaluatePolicy(Agent& agent);
 };
 

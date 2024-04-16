@@ -4,11 +4,7 @@
 #include <set>
 #include <numeric>
 
-struct EpisodeStep {
-    std::pair<int, int> state;
-    ActionType action;
-    float reward;
-};
+
 
 std::vector<EpisodeStep> MCExplore_generateEpisode(Agent& agent, Environment* penv, std::pair<int, int> start, int length) {
     std::vector<EpisodeStep> episode;
@@ -16,7 +12,7 @@ std::vector<EpisodeStep> MCExplore_generateEpisode(Agent& agent, Environment* pe
     const auto& grid = penv->getGrid();
     while (length > 0 && grid[state.first][state.second] != CellType::Target) {
         auto actionProbabilities = agent.getStochasticPolicy(state);
-        ActionType action = agent.chooseActionStochastic(state); // 需要实现根据概率选择动作的方法
+        ActionType action = agent.chooseActionStochastic(state); 
         auto s_next = agent.getNextState(state, action);
         auto reward = penv->getReward(state.first, state.second, action);
         episode.push_back({ state, action, reward });
@@ -26,13 +22,14 @@ std::vector<EpisodeStep> MCExplore_generateEpisode(Agent& agent, Environment* pe
     return episode;
 }
 
-void MCExplore_evaluatePolicy(Agent& agent, Environment* penv, int numEpisodes, float gamma, int lenEpisodes) {
+void MCExplore::evaluatePolicy(Agent& agent) {
     std::map<std::pair<int, int>, std::vector<float>> returns; // 状态的所有返回值
+    auto penv = agent.getEnvironment();
     const auto& grid = penv->getGrid();
     for (size_t i = 0; i < grid.size(); i++) {
         for (size_t j = 0; j < grid[i].size(); j++) {
-            for (int e = 0; e < numEpisodes; ++e) {
-                auto episode = MCExplore_generateEpisode(agent, penv, { i,j }, lenEpisodes);
+            for (int e = 0; e < EpisodeNum; ++e) {
+                auto episode = agent.generateEpisode(agent, penv, { i,j }, EpisodeLen);
                 std::set<std::pair<int, int>> visitedStates; // 用于记录情节中已访问的状态
                 float G = 0; // 初始化累积奖励
                 for (auto it = episode.rbegin(); it != episode.rend(); ++it) { // 逆序遍历情节
@@ -55,7 +52,8 @@ void MCExplore_evaluatePolicy(Agent& agent, Environment* penv, int numEpisodes, 
     }
 }
 
-void MCExplore_improvePolicyGreedy(Agent& agent, Environment* penv, float gamma) {
+void MCExplore::improvePolicyGreedy(Agent& agent) {
+    auto penv = agent.getEnvironment();
     const auto& grid = penv->getGrid();
     for (size_t i = 0; i < penv->getGrid().size(); i++) {
         for (size_t j = 0; j < penv->getGrid()[i].size(); j++) {
@@ -88,8 +86,7 @@ void MCExplore::run(Agent& agent) {
 
     auto gamma = 0.9f;
 
-    auto penv = agent.getEnvironment();
-    MCExplore_evaluatePolicy(agent, penv, EpisodeNum, gamma, EpisodeLen);
-    MCExplore_improvePolicyGreedy(agent, penv, gamma);
+    evaluatePolicy(agent);
+    improvePolicyGreedy(agent);
 
 }
