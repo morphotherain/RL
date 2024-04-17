@@ -143,7 +143,10 @@
     <ClCompile Include="MCBasic.cpp" />
     <ClCompile Include="MCExplore.cpp" />
     <ClCompile Include="MCεGreedy.cpp" />
+    <ClCompile Include="nStepSarsa.cpp" />
+    <ClCompile Include="QLearning.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Sarsa.cpp" />
     <ClCompile Include="StochasticGradientDescent.cpp" />
     <ClCompile Include="TruncatePolicyIteration.cpp" />
   </ItemGroup>
@@ -157,9 +160,12 @@
     <ClInclude Include="MCBasic.h" />
     <ClInclude Include="MCExplore.h" />
     <ClInclude Include="MCεGreedy.h" />
+    <ClInclude Include="nStepSarsa.h" />
+    <ClInclude Include="QLearning.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RLAlgorithm.h" />
+    <ClInclude Include="Sarsa.h" />
     <ClInclude Include="StochasticGradientDescent.h" />
     <ClInclude Include="TruncatePolicyIteration.h" />
   </ItemGroup>

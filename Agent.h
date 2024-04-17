@@ -12,6 +12,9 @@
 #include "GradientDescent.h"
 #include "batchGradientDescent.h"
 #include "StochasticGradientDescent.h"
+#include "Sarsa.h"
+#include "nStepSarsa.h"
+#include "QLearning.h"
 #include <cstdlib> // 包含rand()和srand()
 #include <ctime> // 包含time()
 
@@ -56,8 +59,10 @@ public:
     // 设置随机性策略的方法
     void setStochasticPolicy(const std::pair<int, int>& state, const std::map<ActionType, float>& actionProbabilities);
 
-    // 根据随机性策略选择动作（伪代码）
+    // 根据随机性策略选择动作
     ActionType chooseActionStochastic(const std::pair<int, int>& state);
+
+
     
     // 获取某状态的随机性策略
     std::map<ActionType, float> getStochasticPolicy(const std::pair<int, int>& state) const;

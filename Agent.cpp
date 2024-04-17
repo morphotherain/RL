@@ -6,7 +6,7 @@ Agent::Agent(Environment* env) : environment(env) {
     initializeDeterministicPolicy(env);
     initializeStochasticPolicy(env);
     //initializeActionSpace();
-    setAlgorithm(new StochasticGradientDescent()); // 默认设置为BellmanSolve算法
+    setAlgorithm(new QLearning()); // 默认设置为BellmanSolve算法
 }
 
 Agent::~Agent() {
@@ -72,7 +72,7 @@ void Agent::setStochasticPolicy(const std::pair<int, int>& state, const std::map
 ActionType Agent::chooseActionStochastic(const std::pair<int, int>& state) {
     auto it = stochasticPolicy.find(state);
     if (it == stochasticPolicy.end()) {
-        return ActionType::Stay; // 如果状态未定义，返回默认动作
+        return ActionType::Up; // 如果状态未定义，返回默认动作
     }
 
     // 累积概率边界
@@ -98,6 +98,8 @@ ActionType Agent::chooseActionStochastic(const std::pair<int, int>& state) {
 
     return ActionType::Stay; // 应该永远不会到达这里，除非概率之和不为1
 }
+
+
 
 std::map<ActionType, float> Agent::getStochasticPolicy(const std::pair<int, int>& state) const {
     if (stochasticPolicy.find(state) != stochasticPolicy.end()) {

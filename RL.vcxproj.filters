@@ -54,6 +54,15 @@
     <ClCompile Include="StochasticGradientDescent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Sarsa.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="nStepSarsa.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="QLearning.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Environment.h">
@@ -96,6 +105,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="StochasticGradientDescent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Sarsa.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="nStepSarsa.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="QLearning.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

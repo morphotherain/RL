@@ -1,5 +1,4 @@
 #include "StochasticGradientDescent.h"
-#include "MCBasic.h"
 #include "Agent.h"
 #include <iostream>
 #include <set>
